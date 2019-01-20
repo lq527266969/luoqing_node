@@ -1,0 +1,24 @@
+{
+  "name": "luoqing_node",
+  "version": "1.0.0",
+  "description": "node项目",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lq527266969/luoqing_node.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lq527266969/luoqing_node/issues"
+  },
+  "homepage": "https://github.com/lq527266969/luoqing_node#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
