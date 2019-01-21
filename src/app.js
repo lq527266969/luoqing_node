@@ -21,7 +21,16 @@ app.use(express.static(path.join(__dirname,'public')))
 //导入路由对象
 const accountRouter = require(path.join(__dirname,'routers/accountRouter.js'))
 
+const studentRouter = require(path.join(__dirname,'routers/studentRouter.js'))
+
 app.use('/account',accountRouter)
+
+
+ app.use('/studentManagement',studentRouter)
+// app.use('/studentManagement',(req,res)=>{
+//     console.log('app.js');
+//     res.end();
+// })
 
 //启动
 app.listen(3000,'127.0.0.1',err=>{
