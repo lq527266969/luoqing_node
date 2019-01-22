@@ -15,6 +15,20 @@ const studentController = require(path.join(__dirname,"../controllers/studentCot
 
 studentRouter.get('/list',studentController.getStudentPage)
 
+studentRouter.get('/add',studentController.getAddStudentPage)
+
+studentRouter.post('/add',studentController.AddStudentPage)
+
+
+studentRouter.get('/edit/:studentId',studentController.getEditStudentPage)
+
+
+studentRouter.post('/edit/:studentId',studentController.editStudent)
+
+studentRouter.get('/delete/:studentId',studentController.deleteStudent)
+
+
+
 //导出
 
 module.exports = studentRouter

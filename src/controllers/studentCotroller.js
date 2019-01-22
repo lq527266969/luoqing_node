@@ -2,31 +2,73 @@ const path = require('path')
 
 const template = require('art-template')
 
-const MongoClient = require('mongodb').MongoClient;
+const databasetools = require(path.join(__dirname,'../tools/datbasetools'))
 
-const url = 'mongodb://localhost:27017';
-
-const dbName = 'szhmqd27';
 const getStudentPage = (req,res)=>{
     const keywords = req.query.keywords || ''
 
-    MongoClient.connect(url, function(err, client) {
-       
-        const db = client.db(dbName);
+    databasetools.findMany('studentInfo',{name:{$regex:keywords}},(err,docs)=>{
+        // const id = ObjectId(_iD)
         
-        const collection = db.collection('studentInfo');
-
-        collection.find({name:{$regex:keywords}}).toArray((err,docs)=>{
-            client.close()
-            const html = template(path.join(__dirname,'../public/views/list.html'),{students:docs,keywords})
-            res.send(html)
-        })
-        
-      });
+        const html = template(path.join(__dirname,'../public/views/list.html'),{students:docs,keywords,loginedName:req.session.loginedName})
+        res.send(html)
+    })
 }
 
+const getAddStudentPage = (req,res)=>{
+    const html = template(path.join(__dirname,'../public/views/add.html'),{loginedName:req.session.loginedName})
+    res.send(html)
+}
+
+const AddStudentPage = (req,res)=>{
+    databasetools.insertSingle('studentInfo',req.body,(err,result)=>{
+        if(!result){
+            res.send('<script>alert("插入失败")</script>')
+        }else{
+            res.send('<script>location=`/studentManagement/list`</script>')
+        }
+    })
+}
+
+const getEditStudentPage =(req,res)=>{
+    const _id =databasetools.ObjectId(req.params.studentId)
+    
+    databasetools.findYige('studentInfo',{_id},(err,doc)=>{
+        doc.loginedName=req.session.loginedName
+       const html = template(path.join(__dirname,'../public/views/edit.html'),doc)
+        res.send(html)
+    })
+}
+
+const editStudent =(req,res)=>{
+    const _id =databasetools.ObjectId(req.params.studentId)
+    databasetools.updateYige('studentInfo',{_id},req.body,(err,result)=>{
+        if(!result){
+            res.send('<script>alert("修改失败")</script>')
+        }else{
+            res.send('<script>location=`/studentManagement/list`</script>')
+        }
+    })
+}
+
+const deleteStudent = (req,res)=>{
+    const _id =databasetools.ObjectId(req.params.studentId)
+    databasetools.deleteYige('studentInfo',{_id},(err,result)=>{
+        if(!result){
+            res.send('<script>alert("删除失败")</script>')
+        }else{
+            res.send('<script>location=`/studentManagement/list`</script>')
+        }
+    })
+}
 //导出
 
 module.exports= {
-    getStudentPage
+    getStudentPage,
+    getAddStudentPage,
+    AddStudentPage,
+    getEditStudentPage,
+    editStudent,
+    deleteStudent
+    
 }

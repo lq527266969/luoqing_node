@@ -25,8 +25,13 @@ accountRouter.get('/login',accountController.getLoginPage)
 //获取验证码
 accountRouter.get('/vcode',accountController.getVcodeImg)
 
-//
+//登录操作
 accountRouter.post('/login',accountController.login)
+
+//注销操作
+accountRouter.get('/loginOut',accountController.loginOut)
+
+
 //导出
 module.exports = accountRouter
 
